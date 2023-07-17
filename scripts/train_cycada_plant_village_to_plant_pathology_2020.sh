@@ -27,7 +27,7 @@ epoch="latest"
 epoch_count=1
 
 pretrain=1
-pretrain_epoch=1 #50
+pretrain_epoch=50 #50
 print_freq=1000 #around 500
 eval_step_freq=1000 # for eval, around 1000
 preprocess="resize_and_crop"
