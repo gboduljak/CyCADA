@@ -3,42 +3,22 @@ seed=0
 #----------------# Experiments -------------
 # M->U
 MODEL_NUM=1_${seed}
-dataroot="../data/mnist_USPS"
+dataroot="data/plant-village-to-plant-pathology-2020"
 dataset_mode="class_unaligned"
-c_A_name="lenet_mnist_acc_97.5000.pt" # acc 91 in U
-netC="lenet"
+netC="vanilla"
 lambda_A=1
 lambda_B=1
 lambda_sem_A=1
 lambda_sem_B=1
-load_size=32
-crop_size=32
-c_lr=0.001
-gpu_ids="0"
+load_size=286
+crop_size=256
+c_lr=0.0001 # For training the source task net model, we use learning rate 1e-4.
+gpu_ids="-1"
 batch_size=128
 direction="AtoB"
 #direction="BtoA"
 num_threads=4
 
-# U->M
-MODEL_NUM=2_${seed}
-dataroot="../data/mnist_USPS"
-dataset_mode="class_unaligned"
-c_A_name="lenet_usps_acc_97.1599.pt" # acc 68 in m
-netC="lenet"
-model_type=""
-lambda_A=1
-lambda_B=1
-lambda_sem_A=1
-lambda_sem_B=1
-load_size=32
-crop_size=32
-c_lr=0.001
-gpu_ids="0"
-batch_size=128
-#direction="AtoB"
-direction="BtoA"
-num_threads=4
 #----------------- Basics ----------------
 niter=40
 niter_decay=100
@@ -46,8 +26,8 @@ continue_train=0
 epoch="latest"
 epoch_count=1
 
-pretrain=0
-pretrain_epoch=50
+pretrain=1
+pretrain_epoch=1 #50
 print_freq=$((${batch_size}*100)) #around 500
 eval_step_freq=$((${batch_size}*100)) # for eval, around 1000
 preprocess="resize_and_crop"
@@ -146,4 +126,4 @@ python train.py \
 --serial_batches=${serial_batches} \
 --suffix=${suffix} \
 --verbose=${verbose} \
---max_gnorm=${max_gnorm} \
+--max_gnorm=${max_gnorm} 
