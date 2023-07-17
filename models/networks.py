@@ -24,8 +24,6 @@ def prediction(out, target=None, onehot=True):
     if onehot:
       _, label = torch.max(out.data, 1)
     else:  # if output is a one channel, set a label where threshold is 0.5
-      print(out.data.shape)
-      print(torch.ones(out.size()[0]))
       label = torch.where(out.data > torch.FloatTensor([0.5]), torch.ones(
           out.size()[0]).long(), torch.zeros(out.size()[0]).long())
     acc = (label == target).sum().item() / target.size()[0]
@@ -670,11 +668,19 @@ class NLayerDiscriminator(nn.Module):
     sequence = [nn.Conv2d(ndf * nf_mult, 1, kernel_size=kw,
                           stride=1, padding=padw)]
     self.model_cls = nn.Sequential(*sequence)
+    self.model_head = nn.Sequential(
+        # code in the implementation expects image level discrimininator
+        nn.Linear(in_features=29*29, out_features=1),
+        nn.Sigmoid()
+    )
 
   def forward(self, input, with_ft=False):
     """Standard forward."""
     ft = self.model_ft(input)
-    out = self.model_cls(ft)
+    out_one_channel = self.model_cls(ft)
+    out_logits = torch.flatten(out_one_channel, start_dim=1)
+    out = self.model_head(out_logits)
+
     if with_ft:
       return out, ft
     else:
