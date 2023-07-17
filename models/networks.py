@@ -822,7 +822,7 @@ class FeatureDiscriminator(nn.Module):
   def __init__(self):
     super(FeatureDiscriminator, self).__init__()
     self.discriminator = nn.Sequential(
-        nn.Linear(10, 500),
+        nn.Linear(3, 500),
         nn.ReLU(),
         nn.Linear(500, 500),
         nn.ReLU(),
