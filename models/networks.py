@@ -246,8 +246,8 @@ def define_D(input_nc, ndf, netD, n_layers_D=3, norm='batch', init_type='normal'
 
 
 def define_C(input_nc, netC, init_type='normal', init_gain=0.02, gpu_ids=[]):
-  if netC == "cycada" or netC == "lenet":  # for 32x32
-    net = LeNet(input_nc)
+  if netC == "cycada" or netC == "lenet":
+    net = VanillaClassifier(num_classes=3, bottleneck_dim=256)
   elif netC == "lenet28":  # for 28
     net = LeNet28(input_nc)
   elif netC == "dtn":  # for 32x32
