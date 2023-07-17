@@ -24,6 +24,8 @@ def prediction(out, target=None, onehot=True):
     if onehot:
       _, label = torch.max(out.data, 1)
     else:  # if output is a one channel, set a label where threshold is 0.5
+      print(out.data.shape)
+      print(torch.ones(out.size()[0]))
       label = torch.where(out.data > torch.FloatTensor([0.5]), torch.ones(
           out.size()[0]).long(), torch.zeros(out.size()[0]).long())
     acc = (label == target).sum().item() / target.size()[0]
