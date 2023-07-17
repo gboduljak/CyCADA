@@ -212,10 +212,10 @@ class CyCADAModel(BaseModel):
     else:
       loss_D = (loss_D_real + loss_D_fake) * 0.5
     # Calculate discriminator accuracy
-    true_labels = torch.ones(real.size()[0]).long()
-    fake_labels = torch.zeros(fake.detach().size()[0]).long()
-    print(pred_real.shape, 'discrim out')
-    print(true_labels.shape, 'true labels shape')
+    true_labels = torch.ones_like(real.shape).long()
+    fake_labels = torch.zeros_like(fake.shape).long()
+    # print(pred_real.shape, 'discrim out')
+    # print(true_labels.shape, 'true labels shape')
     _, true_acc = networks.prediction(
         pred_real.squeeze().cpu(), true_labels, onehot=False)
     _, fake_acc = networks.prediction(
